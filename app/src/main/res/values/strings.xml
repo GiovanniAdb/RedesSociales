@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">ConectionWithMeta</string>
-    <string name="facebook_app_id">147899878121155</string>
-
+    <string name="app_name">Redes Sociales en Android</string>
+    <string name="facebook_app_id">774416880700222</string>
+    <string name="fb_login_protocol_scheme">fb774416880700222</string>
+    <string name="facebook_client_token">280791fc75de17f7c90285aec55f368c</string>
 </resources>
