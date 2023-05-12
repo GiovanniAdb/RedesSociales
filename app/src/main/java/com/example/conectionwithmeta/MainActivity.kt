@@ -2,9 +2,11 @@ package com.example.conectionwithmeta
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -14,19 +16,23 @@ import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareDialog
 import java.util.Arrays
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginButton: LoginButton
-    private lateinit var botonprueba: Button
+    var shareDialog: ShareDialog? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //se instancia la ventana de compartir contenido
+        shareDialog = ShareDialog(this)
 
         val accessToken = AccessToken.getCurrentAccessToken()
         val isLoggedIn = accessToken != null && !accessToken.isExpired
@@ -37,9 +43,6 @@ class MainActivity : AppCompatActivity() {
             val EMAIL = "email"
 
             loginButton = findViewById<View>(R.id.login_button) as LoginButton
-            /*
-            botonprueba = findViewById<View>(R.id.btnP) as Button
-             */
             Arrays.asList(EMAIL)
 
             // Callback registration
@@ -58,14 +61,19 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        /*
-        botonprueba.setOnClickListener {
+        //boton de compartir link
+        var btnenlace = findViewById<View>(R.id.button2) as Button
 
-
-
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"))
+        btnenlace.setOnClickListener {
+            val content: ShareLinkContent = ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://www.youtube.com/watch?v=11BMB9sh1vI"))
+                .build()
+            if (ShareDialog.canShow(ShareLinkContent::class.java)){
+                shareDialog!!.show(content)
+            }
         }
-         */
+
+
         LoginManager.getInstance().retrieveLoginStatus(this, object : LoginStatusCallback {
             override fun onCompleted(accessToken: AccessToken) {
                 // User was previously logged in, can log them in directly here.
